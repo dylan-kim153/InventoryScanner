@@ -25,13 +25,16 @@ class MainActivity : ComponentActivity() {
         val database = InventoryDatabase.getDatabase(applicationContext)
 
         lifecycleScope.launch {
-            val companies = database.companyDao().getAll()
-
-            if (companies.isEmpty()) {
-                database.companyDao().insert(
-                    Company(name = "테스트 업체")
+            val count = database.companyDao().getCount()
+            if (count == 0) {
+                database.companyDao().insertAll(
+                    listOf(
+                        Company(name = "업체A"),
+                        Company(name = "업체B")
+                    )
                 )
             }
+            val companies = database.companyDao().getAll()
             Log.d("RoomTest", "companies = $companies")
         }
 
