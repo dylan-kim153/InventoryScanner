@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.local.entity.Company
+import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 import com.dylankim.inventoryscanner.data.local.entity.Location
 import com.dylankim.inventoryscanner.data.local.entity.Product
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
@@ -112,12 +113,47 @@ class MainActivity : ComponentActivity() {
                         price = "3000"
                     )
                 )
+
+                val product =
+                    database.productDao().getProductByBarcode("88003")
+
+                Log.d("RoomTest", "product = $product")
+
+                database.inventoryRecordDao().insert(
+                    InventoryRecord(
+                        locationId = companyALocations[0].id,
+                        locationNumber = "001",
+                        countingNumber = 1,
+                        productCode = "A002",
+                        barcode = "88002",
+                        productName = "A업체 상품2",
+                        price = "2000",
+                        quantity = "1",
+                        createdAt = "2026-08-25 15:00:00"
+                    )
+                )
+
+                database.inventoryRecordDao().insert(
+                    InventoryRecord(
+                        locationId = companyALocations[1].id,
+                        locationNumber = "001",
+                        countingNumber = 1,
+                        productCode = "A001",
+                        barcode = "88001",
+                        productName = "A업체 상품1",
+                        price = "1000",
+                        quantity = "1.5",
+                        createdAt = "2026-08-25 15:10:00"
+                    )
+                )
+
+                val inventoryRecord =
+                    database.inventoryRecordDao().getAll()
+
+                Log.d("RoomTest", "inventoryRecord = $inventoryRecord")
             }
 
-            val product =
-                database.productDao().getProductByBarcode("88003")
 
-            Log.d("RoomTest", "product = $product")
 
 
         }
