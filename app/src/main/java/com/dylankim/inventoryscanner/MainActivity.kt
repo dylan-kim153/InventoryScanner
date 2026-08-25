@@ -1,6 +1,7 @@
 package com.dylankim.inventoryscanner
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,9 +25,8 @@ class MainActivity : ComponentActivity() {
         val database = InventoryDatabase.getDatabase(applicationContext)
 
         lifecycleScope.launch {
-            val companyId = database.companyDao().insert(
-                Company(name = "테스트 업체")
-            )
+            val companies = database.companyDao().getAll()
+            Log.d("RoomTest","companies = $companies")
         }
 
         enableEdgeToEdge()
