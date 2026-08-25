@@ -10,6 +10,9 @@ interface CompanyDao {
     @Query("SELECT * FROM company")
     suspend fun getAll(): List<Company>
 
+    @Query("SELECT COUNT(*) FROM company")
+    suspend fun getCount(): Int
+
     @Insert
     suspend fun insert(company: Company): Long
 
