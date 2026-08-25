@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.local.entity.Company
+import com.dylankim.inventoryscanner.data.local.entity.Location
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 import kotlinx.coroutines.launch
 
@@ -26,6 +27,8 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             val count = database.companyDao().getCount()
+
+            //초기 셋팅 DB Count 후 0 일 경우만
             if (count == 0) {
                 database.companyDao().insertAll(
                     listOf(
@@ -33,9 +36,55 @@ class MainActivity : ComponentActivity() {
                         Company(name = "업체B")
                     )
                 )
+                val companies = database.companyDao().getAll()
+
+                //A업체 - 매장,창고
+                database.locationDao().insert(
+                    Location(
+                        companyId = companies[0].id,
+                        name = "매장"
+                    )
+                )
+                database.locationDao().insert(
+                    Location(
+                        companyId = companies[0].id,
+                        name = "창고"
+                    )
+                )
+                //B업체 - 매장,창고,외부창고
+                database.locationDao().insert(
+                    Location(
+                        companyId = companies[1].id,
+                        name = "매장"
+                    )
+                )
+                database.locationDao().insert(
+                    Location(
+                        companyId = companies[1].id,
+                        name = "창고"
+                    )
+                )
+                database.locationDao().insert(
+                    Location(
+                        companyId = companies[1].id,
+                        name = "외부창고"
+                    )
+                )
+
+                Log.d("RoomTest", "companies = $companies")
+
+                val companyALocations =
+                    database.locationDao().getLocationsByCompanyId(companies[0].id)
+
+                val companyBLocations =
+                    database.locationDao().getLocationsByCompanyId(companies[1].id)
+
+                Log.d("RoomTest", "업체A locations = $companyALocations")
+                Log.d("RoomTest", "업체B locations = $companyBLocations")
+
             }
-            val companies = database.companyDao().getAll()
-            Log.d("RoomTest", "companies = $companies")
+
+
         }
 
         enableEdgeToEdge()
