@@ -16,6 +16,7 @@ import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             InventoryScannerTheme {
