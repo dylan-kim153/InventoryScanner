@@ -26,7 +26,13 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             val companies = database.companyDao().getAll()
-            Log.d("RoomTest","companies = $companies")
+
+            if (companies.isEmpty()) {
+                database.companyDao().insert(
+                    Company(name = "테스트 업체")
+                )
+            }
+            Log.d("RoomTest", "companies = $companies")
         }
 
         enableEdgeToEdge()
