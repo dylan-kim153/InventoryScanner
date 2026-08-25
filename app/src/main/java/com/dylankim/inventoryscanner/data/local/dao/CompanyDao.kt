@@ -16,4 +16,7 @@ interface CompanyDao {
     @Insert
     suspend fun insert(company: Company): Long
 
+    @Insert
+    suspend fun insertAll(companies: List<Company>)
+
 }
