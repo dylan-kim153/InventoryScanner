@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.local.entity.Company
 import com.dylankim.inventoryscanner.data.local.entity.Location
+import com.dylankim.inventoryscanner.data.local.entity.Product
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 import kotlinx.coroutines.launch
 
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val count = database.companyDao().getCount()
 
-            //초기 셋팅 DB Count 후 0 일 경우만
+            //초기 셋팅 - DB Count 후 0 일 경우만
             if (count == 0) {
                 database.companyDao().insertAll(
                     listOf(
@@ -82,7 +83,41 @@ class MainActivity : ComponentActivity() {
                 Log.d("RoomTest", "업체A locations = $companyALocations")
                 Log.d("RoomTest", "업체B locations = $companyBLocations")
 
+                database.productDao().insert(
+                    Product(
+                        companyId = companies[0].id ,
+                        productCode = "A001",
+                        barcode = "88001",
+                        name = "A업체 상품1",
+                        price = "1000"
+                    )
+                )
+                database.productDao().insert(
+                    Product(
+                        companyId = companies[0].id ,
+                        productCode = "A002",
+                        barcode = "88002",
+                        name = "A업체 상품2",
+                        price = "2000"
+                    )
+                )
+
+
+                database.productDao().insert(
+                    Product(
+                        companyId = companies[0].id ,
+                        productCode = "A003",
+                        barcode = "88003",
+                        name = "A업체 상품3",
+                        price = "3000"
+                    )
+                )
             }
+
+            val product =
+                database.productDao().getProductByBarcode("88003")
+
+            Log.d("RoomTest", "product = $product")
 
 
         }
