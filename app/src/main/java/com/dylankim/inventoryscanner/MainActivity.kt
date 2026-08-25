@@ -154,7 +154,15 @@ class MainActivity : ComponentActivity() {
             }
 
 
+            val inventoryRecord =
+                database.inventoryRecordDao().getAll()
 
+            database.inventoryRecordDao().deleteAll()
+
+            val inventoryRecordAfterDelete =
+                database.inventoryRecordDao().getAll()
+
+            Log.d("RoomTest", "inventoryRecord = $inventoryRecord \r inventoryRecordAfterDelete = $inventoryRecordAfterDelete")
 
         }
 
