@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.repository.CompanyRepository
+import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
@@ -38,29 +39,15 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
         setContent {
-            val viewModel: CompanyViewModel = viewModel(
-                factory = factory
-            )
-
-            LaunchedEffect(Unit){
-                viewModel.loadCompanies()
-            }
-
-            val companies by viewModel.companies.collectAsState()
 
 
 
             InventoryScannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(
+                    CompanyScreen(
+                        factory = factory,
                         modifier = Modifier.padding(innerPadding)
-                    ) {
-                        companies.forEach { company ->
-                            Text(
-                                text = company.name
-                            )
-                        }
-                    }
+                    )
                 }
             }
         }
