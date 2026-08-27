@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.repository.CompanyRepository
+import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
@@ -33,8 +34,14 @@ class MainActivity : ComponentActivity() {
             database.companyDao()
         )
 
+        val locationRepository = LocationRepository(
+            database.locationDao()
+        )
+
+
         val factory = CompanyViewModelFactory(
-            companyRepository
+            companyRepository,
+            locationRepository
         )
 
         enableEdgeToEdge()
