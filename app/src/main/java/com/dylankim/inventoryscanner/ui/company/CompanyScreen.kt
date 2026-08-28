@@ -14,11 +14,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.dylankim.inventoryscanner.data.local.entity.Company
 
 @Composable
 fun CompanyScreen(
     factory: CompanyViewModelFactory,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
 
@@ -70,7 +72,7 @@ fun CompanyScreen(
 
             Button(
                 onClick = {
-                    // 다음 단계에서 InventoryScreen 이동 처리
+                    navController.navigate("inventory")
                 },
                 enabled = uiState.selectedLocation != null &&
                     uiState.locationNumber.isNotBlank()

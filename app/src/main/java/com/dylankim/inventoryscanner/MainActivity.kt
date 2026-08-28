@@ -25,6 +25,7 @@ import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
+import com.dylankim.inventoryscanner.ui.inventory.InventoryScreen
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,16 +54,22 @@ class MainActivity : ComponentActivity() {
 
             InventoryScannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-
+                    val navController = rememberNavController()
                     NavHost(
-                        navController = rememberNavController(),
+                        navController = navController,
                         startDestination = "company",
                         modifier = Modifier.padding(innerPadding)
                     ) {
+                        //셋팅화면
                         composable("company") {
                             CompanyScreen(
-                                factory = factory
+                                factory = factory,
+                                navController = navController
                             )
+                        }
+                        //재고조사화면
+                        composable("inventory"){
+                            InventoryScreen()
                         }
                     }
                 }
