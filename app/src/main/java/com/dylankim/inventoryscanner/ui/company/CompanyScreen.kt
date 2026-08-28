@@ -72,10 +72,17 @@ fun CompanyScreen(
 
             Button(
                 onClick = {
-                    navController.navigate("inventory")
+                    val companyId = uiState.selectedCompany?.id ?: return@Button
+                    val locationId = uiState.selectedLocation?.id ?: return@Button
+                    val locationNumber = uiState.locationNumber
+
+                    navController.navigate(
+                        "inventory/$companyId/$locationId/$locationNumber"
+                    )
                 },
-                enabled = uiState.selectedLocation != null &&
-                    uiState.locationNumber.isNotBlank()
+                enabled = uiState.selectedCompany != null &&
+                        uiState.selectedLocation != null &&
+                        uiState.locationNumber.isNotBlank()
             ){
                 Text("재고조사 시작")
             }

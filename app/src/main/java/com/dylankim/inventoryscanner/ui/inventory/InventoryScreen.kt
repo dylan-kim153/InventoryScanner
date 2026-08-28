@@ -10,6 +10,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun InventoryScreen(
+    companyId: Long,
+    locationId: Long,
+    locationNumber: String,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -17,8 +20,13 @@ fun InventoryScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+
         Text(
-            text = "재고조사"
+            text = "위치: $locationNumber"
         )
+        Text(
+            text = "순번: 0001"
+        )
+
     }
 }

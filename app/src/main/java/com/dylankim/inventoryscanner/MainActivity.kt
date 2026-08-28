@@ -68,8 +68,21 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         //재고조사화면
-                        composable("inventory"){
-                            InventoryScreen()
+                        composable("inventory/{companyId}/{locationId}/{locationNumber}"){ backStackEntry ->
+                            val companyId =
+                                backStackEntry.arguments?.getString("companyId")?.toLongOrNull() ?: return@composable
+
+                            val locationId =
+                                backStackEntry.arguments?.getString("locationId")?.toLongOrNull() ?: return@composable
+
+                            val locationNumber =
+                                backStackEntry.arguments?.getString("locationNumber") ?: return@composable
+
+                            InventoryScreen(
+                                companyId = companyId,
+                                locationId = locationId,
+                                locationNumber = locationNumber
+                            )
                         }
                     }
                 }
