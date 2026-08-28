@@ -21,11 +21,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.repository.CompanyRepository
+import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
 import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
 import com.dylankim.inventoryscanner.ui.inventory.InventoryScreen
+import com.dylankim.inventoryscanner.ui.inventory.InventoryViewModelFactory
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,11 +44,19 @@ class MainActivity : ComponentActivity() {
             database.locationDao()
         )
 
-
         val factory = CompanyViewModelFactory(
             companyRepository,
             locationRepository
         )
+
+        val inventoryRecordRepository = InventoryRecordRepository(
+            database.inventoryRecordDao()
+        )
+
+        val inventoryFactory = InventoryViewModelFactory(
+            inventoryRecordRepository
+        )
+
 
         enableEdgeToEdge()
         setContent {
@@ -81,7 +91,8 @@ class MainActivity : ComponentActivity() {
                             InventoryScreen(
                                 companyId = companyId,
                                 locationId = locationId,
-                                locationNumber = locationNumber
+                                locationNumber = locationNumber,
+                                factory = inventoryFactory
                             )
                         }
                     }

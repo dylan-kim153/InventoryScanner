@@ -17,9 +17,12 @@ fun InventoryScreen(
     companyId: Long,
     locationId: Long,
     locationNumber: String,
+    factory: InventoryViewModelFactory,
     modifier: Modifier = Modifier
 ) {
-    val viewmodel: InventoryViewModel = viewModel()
+    val viewmodel: InventoryViewModel = viewModel(
+        factory = factory
+    )
     val uiState by viewmodel.uiState.collectAsState()
 
     LaunchedEffect(companyId,locationId,locationNumber){
