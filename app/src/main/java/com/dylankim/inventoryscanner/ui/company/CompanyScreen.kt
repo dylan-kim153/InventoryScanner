@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +60,23 @@ fun CompanyScreen(
             Text(
                 text = "선택된 Location : ${location.name}"
             )
+
+            OutlinedTextField(
+                value = uiState.locationNumber,
+                onValueChange = viewModel::updateLocationNumber,
+                label = {Text("LocationNumber")},
+                singleLine = true
+            )
+
+            Button(
+                onClick = {
+                    // 다음 단계에서 InventoryScreen 이동 처리
+                },
+                enabled = uiState.selectedLocation != null &&
+                    uiState.locationNumber.isNotBlank()
+            ){
+                Text("재고조사 시작")
+            }
         }
     }
 }

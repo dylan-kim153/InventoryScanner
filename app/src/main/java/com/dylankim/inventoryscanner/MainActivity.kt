@@ -16,6 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.repository.CompanyRepository
 import com.dylankim.inventoryscanner.data.repository.LocationRepository
@@ -48,13 +51,20 @@ class MainActivity : ComponentActivity() {
         setContent {
 
 
-
             InventoryScannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CompanyScreen(
-                        factory = factory,
+
+                    NavHost(
+                        navController = rememberNavController(),
+                        startDestination = "company",
                         modifier = Modifier.padding(innerPadding)
-                    )
+                    ) {
+                        composable("company") {
+                            CompanyScreen(
+                                factory = factory
+                            )
+                        }
+                    }
                 }
             }
         }

@@ -42,6 +42,12 @@ class CompanyViewModel(
         )
     }
 
+    fun updateLocationNumber(locationNumber: String){
+        _uiState.value = _uiState.value.copy(
+            locationNumber = locationNumber
+        )
+    }
+
     fun loadLocations(companyId: Long) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
