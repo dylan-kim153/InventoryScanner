@@ -1,5 +1,6 @@
 package com.dylankim.inventoryscanner.ui.company
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -24,6 +25,7 @@ fun CompanyScreen(
     )
 
     val companies by viewModel.companies.collectAsState()
+    val locations by viewModel.locations.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.loadCompanies()
@@ -36,8 +38,17 @@ fun CompanyScreen(
     ) {
         companies.forEach { company ->
             Text(
-                text = company.name
+                text = company.name,
+                modifier = Modifier.clickable{
+                    viewModel.selectCompany(company)
+                }
             )
+        }
+        locations.forEach { location ->
+            Text(
+                text = location.name
+            )
+
         }
     }
 }
