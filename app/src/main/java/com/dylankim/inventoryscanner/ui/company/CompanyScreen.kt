@@ -48,9 +48,16 @@ fun CompanyScreen(
         }
         locations.forEach { location ->
             Text(
-                text = location.name
+                text = location.name,
+                modifier = Modifier.clickable{
+                    viewModel.selectLocation(location = location)
+                }
             )
-
+        }
+        uiState.selectedLocation?.let { location ->
+            Text(
+                text = "선택된 Location : ${location.name}"
+            )
         }
     }
 }
