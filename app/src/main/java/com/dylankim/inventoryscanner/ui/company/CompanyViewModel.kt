@@ -16,30 +16,31 @@ class CompanyViewModel(
     private val companyRepository: CompanyRepository,
     private val locationRepository: LocationRepository
 ) : ViewModel() {
-    private val _companies = MutableStateFlow<List<Company>>(emptyList())
-    val companies: StateFlow<List<Company>> = _companies.asStateFlow()
 
-    private val _selectedCompany = MutableStateFlow<Company?>(null)
-    val selectedCompany = _selectedCompany.asStateFlow()
-
-    private val _locations = MutableStateFlow<List<Location>>(emptyList())
-    val locations = _locations.asStateFlow()
+    private val _uiState = MutableStateFlow(CompanyUiState())
+    val uiState: StateFlow<CompanyUiState> = _uiState.asStateFlow()
 
     fun loadCompanies(){
         viewModelScope.launch {
-            _companies.value = companyRepository.getCompanies()
+            _uiState.value = _uiState.value.copy(
+                companies = companyRepository.getCompanies()
+            )
         }
     }
 
     fun selectCompany(company: Company){
-        _selectedCompany.value = company
+        _uiState.value = _uiState.value.copy(
+            selectedCompany = company
+        )
 
         loadLocations(company.id)
     }
 
     fun loadLocations(companyId: Long) {
         viewModelScope.launch {
-            _locations.value = locationRepository.getLocationByCompanyId(companyId)
+            _uiState.value = _uiState.value.copy(
+                locations = locationRepository.getLocationByCompanyId(companyId)
+            )
         }
     }
 

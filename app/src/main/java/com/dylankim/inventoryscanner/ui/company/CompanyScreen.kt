@@ -24,8 +24,10 @@ fun CompanyScreen(
         factory = factory
     )
 
-    val companies by viewModel.companies.collectAsState()
-    val locations by viewModel.locations.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+
+    val companies = uiState.companies
+    val locations = uiState.locations
 
     LaunchedEffect(Unit) {
         viewModel.loadCompanies()
