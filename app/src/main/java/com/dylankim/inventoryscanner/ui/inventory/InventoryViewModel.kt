@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
+import com.dylankim.inventoryscanner.data.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -11,7 +12,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class InventoryViewModel(
-    private val inventoryRecordRepository: InventoryRecordRepository
+    private val inventoryRecordRepository: InventoryRecordRepository,
+    private val productRepository: ProductRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(InventoryUiState())
     val uiState: StateFlow<InventoryUiState> = _uiState.asStateFlow()
@@ -66,6 +68,16 @@ class InventoryViewModel(
 
             inventoryRecordRepository.insert(record)
 
+        }
+    }
+
+    fun findProduct(barcode: String){
+        viewModelScope.launch {
+            val product = productRepository.getProductByBarcode(barcode)
+
+            _uiState.value = _uiState.value.copy(
+                product = product
+            )
         }
     }
 }
