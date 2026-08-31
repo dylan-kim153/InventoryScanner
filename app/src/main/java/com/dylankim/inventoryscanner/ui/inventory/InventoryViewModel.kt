@@ -73,6 +73,10 @@ class InventoryViewModel(
 
     fun findProduct(barcode: String){
         viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                product = null
+            )
+
             val product = productRepository.getProductByBarcode(barcode)
 
             _uiState.value = _uiState.value.copy(

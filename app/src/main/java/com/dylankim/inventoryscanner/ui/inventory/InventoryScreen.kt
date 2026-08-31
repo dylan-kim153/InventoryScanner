@@ -78,8 +78,12 @@ fun InventoryScreen(
             Text(
                 text = "가격 : ${product.price}"
             )
-
-
+        } ?: run {
+            if (uiState.barcode.isNotBlank()) {
+                Text(
+                    text = "미등록상품"
+                )
+            }
         }
     }
 }
