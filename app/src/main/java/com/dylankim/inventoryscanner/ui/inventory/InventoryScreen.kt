@@ -3,6 +3,7 @@ package com.dylankim.inventoryscanner.ui.inventory
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,13 +21,13 @@ fun InventoryScreen(
     factory: InventoryViewModelFactory,
     modifier: Modifier = Modifier
 ) {
-    val viewmodel: InventoryViewModel = viewModel(
+    val viewModel: InventoryViewModel = viewModel(
         factory = factory
     )
-    val uiState by viewmodel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(companyId,locationId,locationNumber){
-        viewmodel.initialize(
+        viewModel.initialize(
             companyId = companyId,
             locationId = locationId,
             locationNumber = locationNumber
@@ -52,5 +53,18 @@ fun InventoryScreen(
             text = "순번: ${uiState.countingNumber.toString().padStart(4,'0')}"
         )
 
+        Button(
+            onClick = {
+                viewModel.saveInventoryRecord(
+                    barcode = "8801234567890",
+                    productCode = "TEST001",
+                    productName = "테스트상품",
+                    price = "1000",
+                    quantity = "5"
+                )
+            }
+        ) {
+            Text("테스트 저장")
+        }
     }
 }

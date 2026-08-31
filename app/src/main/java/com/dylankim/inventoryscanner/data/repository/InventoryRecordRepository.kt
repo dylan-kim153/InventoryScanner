@@ -1,6 +1,7 @@
 package com.dylankim.inventoryscanner.data.repository
 
 import com.dylankim.inventoryscanner.data.local.dao.InventoryRecordDao
+import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 
 class InventoryRecordRepository(
     private val inventoryRecordDao: InventoryRecordDao
@@ -13,5 +14,9 @@ class InventoryRecordRepository(
             locationId = locationId,
             locationNumber = locationNumber
         )
+    }
+
+    suspend fun insert(record: InventoryRecord){
+        inventoryRecordDao.insert(record)
     }
 }
