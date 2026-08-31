@@ -3,9 +3,11 @@ package com.dylankim.inventoryscanner.ui.inventory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
+import com.dylankim.inventoryscanner.data.repository.ProductRepository
 
 class InventoryViewModelFactory(
-    private val inventoryRecordRepository: InventoryRecordRepository
+    private val inventoryRecordRepository: InventoryRecordRepository,
+    private val productRepository: ProductRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(
         modelClass: Class<T>
@@ -13,7 +15,8 @@ class InventoryViewModelFactory(
         if (modelClass.isAssignableFrom(InventoryViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return InventoryViewModel(
-                inventoryRecordRepository = inventoryRecordRepository
+                inventoryRecordRepository = inventoryRecordRepository,
+                productRepository = productRepository
             ) as T
 
         }

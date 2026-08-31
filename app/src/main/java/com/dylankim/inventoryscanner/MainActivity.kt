@@ -23,6 +23,7 @@ import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.repository.CompanyRepository
 import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
 import com.dylankim.inventoryscanner.data.repository.LocationRepository
+import com.dylankim.inventoryscanner.data.repository.ProductRepository
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
@@ -53,8 +54,13 @@ class MainActivity : ComponentActivity() {
             database.inventoryRecordDao()
         )
 
+        val productRepository = ProductRepository(
+            database.productDao()
+        )
+
         val inventoryFactory = InventoryViewModelFactory(
-            inventoryRecordRepository
+            inventoryRecordRepository = inventoryRecordRepository,
+            productRepository = productRepository
         )
 
 
