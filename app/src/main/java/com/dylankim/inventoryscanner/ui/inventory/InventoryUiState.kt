@@ -7,5 +7,6 @@ data class InventoryUiState(
     val locationId: Long = 0,
     val locationNumber: String = "",
     val countingNumber: Int = 1,
-    val product: Product? = null
+    val product: Product? = null,
+    val barcode: String = ""
 )

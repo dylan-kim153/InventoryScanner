@@ -80,4 +80,10 @@ class InventoryViewModel(
             )
         }
     }
+
+    fun updateBarcode(barcode: String){
+        _uiState.value = _uiState.value.copy(
+            barcode = barcode
+        )
+    }
 }

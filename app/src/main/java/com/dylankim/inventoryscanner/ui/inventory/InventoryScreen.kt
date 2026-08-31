@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -12,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlin.math.sin
 
 @Composable
 fun InventoryScreen(
@@ -53,5 +55,31 @@ fun InventoryScreen(
             text = "순번: ${uiState.countingNumber.toString().padStart(4,'0')}"
         )
 
+        OutlinedTextField(
+            value = uiState.barcode,
+            onValueChange = viewModel::updateBarcode,
+            label = { Text("바코드")},
+            singleLine = true
+        )
+
+        Button(
+            onClick = {
+                viewModel.findProduct(uiState.barcode)
+            },
+            enabled = uiState.barcode.isNotBlank()
+        ) {
+            Text("상품 조회")
+        }
+
+        uiState.product?.let { product ->
+            Text(
+                text = "상품명 : ${product.name}"
+            )
+            Text(
+                text = "가격 : ${product.price}"
+            )
+
+
+        }
     }
 }
