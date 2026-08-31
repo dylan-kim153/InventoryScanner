@@ -49,7 +49,11 @@ dependencies {
 
     //DB Room
     implementation(libs.androidx.room.runtime)
+    implementation(libs.navigation.compose)
     ksp(libs.androidx.room.compiler)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

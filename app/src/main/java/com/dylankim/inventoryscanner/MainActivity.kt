@@ -16,12 +16,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.dylankim.inventoryscanner.data.local.InventoryDatabase
 import com.dylankim.inventoryscanner.data.repository.CompanyRepository
+import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
 import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
+import com.dylankim.inventoryscanner.ui.inventory.InventoryScreen
+import com.dylankim.inventoryscanner.ui.inventory.InventoryViewModelFactory
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 
 class MainActivity : ComponentActivity() {
@@ -38,23 +44,58 @@ class MainActivity : ComponentActivity() {
             database.locationDao()
         )
 
-
         val factory = CompanyViewModelFactory(
             companyRepository,
             locationRepository
         )
 
+        val inventoryRecordRepository = InventoryRecordRepository(
+            database.inventoryRecordDao()
+        )
+
+        val inventoryFactory = InventoryViewModelFactory(
+            inventoryRecordRepository
+        )
+
+
         enableEdgeToEdge()
         setContent {
 
 
-
             InventoryScannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    CompanyScreen(
-                        factory = factory,
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = "company",
                         modifier = Modifier.padding(innerPadding)
-                    )
+                    ) {
+                        //셋팅화면
+                        composable("company") {
+                            CompanyScreen(
+                                factory = factory,
+                                navController = navController
+                            )
+                        }
+                        //재고조사화면
+                        composable("inventory/{companyId}/{locationId}/{locationNumber}"){ backStackEntry ->
+                            val companyId =
+                                backStackEntry.arguments?.getString("companyId")?.toLongOrNull() ?: return@composable
+
+                            val locationId =
+                                backStackEntry.arguments?.getString("locationId")?.toLongOrNull() ?: return@composable
+
+                            val locationNumber =
+                                backStackEntry.arguments?.getString("locationNumber") ?: return@composable
+
+                            InventoryScreen(
+                                companyId = companyId,
+                                locationId = locationId,
+                                locationNumber = locationNumber,
+                                factory = inventoryFactory
+                            )
+                        }
+                    }
                 }
             }
         }

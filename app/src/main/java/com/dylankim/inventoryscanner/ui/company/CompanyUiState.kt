@@ -6,5 +6,7 @@ import com.dylankim.inventoryscanner.data.local.entity.Location
 data class CompanyUiState(
     val companies: List<Company> = emptyList(),
     val selectedCompany: Company? = null,
-    val locations: List<Location> = emptyList()
+    val locations: List<Location> = emptyList(),
+    val selectedLocation: Location? = null,
+    val locationNumber: String = ""
 )
