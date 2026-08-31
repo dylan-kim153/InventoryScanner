@@ -53,18 +53,5 @@ fun InventoryScreen(
             text = "순번: ${uiState.countingNumber.toString().padStart(4,'0')}"
         )
 
-        Button(
-            onClick = {
-                viewModel.saveInventoryRecord(
-                    barcode = "8801234567890",
-                    productCode = "TEST001",
-                    productName = "테스트상품",
-                    price = "1000",
-                    quantity = "5"
-                )
-            }
-        ) {
-            Text("테스트 저장")
-        }
     }
 }
