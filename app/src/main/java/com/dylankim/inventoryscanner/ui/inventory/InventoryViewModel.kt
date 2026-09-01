@@ -33,7 +33,7 @@ class InventoryViewModel(
                 )
 
             val nextCountingNumber =
-                (lastCountingNumber ?: 0 ) + 1
+                (lastCountingNumber ?: 0) + 1
 
             _uiState.value = _uiState.value.copy(
                 companyId = companyId,
@@ -50,11 +50,11 @@ class InventoryViewModel(
         productName: String,
         price: String,
         quantity: String
-    ){
+    ) {
         viewModelScope.launch {
             val state = _uiState.value
 
-            var record = InventoryRecord(
+            val record = InventoryRecord(
                 locationId = state.locationId,
                 locationNumber = state.locationNumber,
                 countingNumber = state.countingNumber,
@@ -68,10 +68,13 @@ class InventoryViewModel(
 
             inventoryRecordRepository.insert(record)
 
+            _uiState.value = _uiState.value.copy(
+                countingNumber = state.countingNumber + 1
+            )
         }
     }
 
-    fun findProduct(barcode: String){
+    fun findProduct(barcode: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 product = null
@@ -85,9 +88,17 @@ class InventoryViewModel(
         }
     }
 
-    fun updateBarcode(barcode: String){
+    fun updateBarcode(barcode: String) {
         _uiState.value = _uiState.value.copy(
             barcode = barcode
         )
     }
+
+    fun updateQuantity(quantity: String) {
+        _uiState.value = _uiState.value.copy(
+            quantity = quantity
+        )
+    }
+
+
 }
