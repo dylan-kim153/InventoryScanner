@@ -85,5 +85,31 @@ fun InventoryScreen(
                 )
             }
         }
+
+        OutlinedTextField(
+            value = uiState.quantity,
+            onValueChange = viewModel::updateQuantity,
+            label = { Text("수량")},
+            singleLine = true
+        )
+
+        Button(
+            onClick = {
+                uiState.product?.let { product ->
+                    viewModel.saveInventoryRecord(
+                        barcode = uiState.barcode,
+                        productCode = product.productCode,
+                        productName = product.name,
+                        price = product.price,
+                        quantity = uiState.quantity
+                    )
+
+                }
+            },
+            enabled = uiState.product != null &&
+                uiState.quantity.isNotBlank()
+        ) {
+            Text("저장")
+        }
     }
 }
