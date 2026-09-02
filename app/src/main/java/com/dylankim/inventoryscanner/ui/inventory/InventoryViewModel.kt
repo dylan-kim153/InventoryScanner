@@ -116,5 +116,23 @@ class InventoryViewModel(
         )
     }
 
+    fun deleteInventoryRecord(id: Long){
+        viewModelScope.launch {
+            inventoryRecordRepository.deleteById(id)
+
+            val state = _uiState.value
+
+            val inventoryRecords =
+                inventoryRecordRepository.getByLocation(
+                    locationId = state.locationId,
+                    locationNumber = state.locationNumber
+                )
+
+            _uiState.value = _uiState.value.copy(
+                inventoryRecords = inventoryRecords
+            )
+        }
+    }
+
 
 }
