@@ -37,10 +37,13 @@ interface InventoryRecordDao {
     suspend fun getByLocation(
         locationId: Long,
         locationNumber: String
-    ) : List<InventoryRecord>
+    ): List<InventoryRecord>
 
     @Query("DELETE FROM InventoryRecord")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM InventoryRecord WHERE id = :id")
+    suspend fun deleteById(id: Long)
 
     @Insert
     suspend fun insert(inventoryRecord: InventoryRecord): Long

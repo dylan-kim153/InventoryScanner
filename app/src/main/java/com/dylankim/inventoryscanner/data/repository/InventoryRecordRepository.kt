@@ -19,14 +19,18 @@ class InventoryRecordRepository(
     suspend fun getByLocation(
         locationId: Long,
         locationNumber: String
-    ): List<InventoryRecord>{
+    ): List<InventoryRecord> {
         return inventoryRecordDao.getByLocation(
             locationId = locationId,
             locationNumber = locationNumber
         )
     }
 
-    suspend fun insert(record: InventoryRecord){
+    suspend fun deleteById(id: Long) {
+        inventoryRecordDao.deleteById(id)
+    }
+
+    suspend fun insert(record: InventoryRecord) {
         inventoryRecordDao.insert(record)
     }
 }
