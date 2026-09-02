@@ -111,5 +111,17 @@ fun InventoryScreen(
         ) {
             Text("저장")
         }
+
+        Text(
+            text = "재고조사 내역"
+        )
+
+        uiState.inventoryRecords.forEach { record ->
+            Text(
+                text = "${record.countingNumber.toString().padStart(4,'0')} / " +
+                        "${record.productName} / " +
+                        "수량 : ${record.quantity}"
+            )
+        }
     }
 }
