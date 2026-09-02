@@ -26,6 +26,19 @@ interface InventoryRecordDao {
     @Query("SELECT * FROM InventoryRecord")
     suspend fun getAll(): List<InventoryRecord>
 
+    @Query(
+        """
+            SELECT * FROM InventoryRecord
+            WHERE locationId = :locationId
+              AND locationNumber = :locationNumber
+            ORDER BY countingNumber DESC
+            """
+    )
+    suspend fun getByLocation(
+        locationId: Long,
+        locationNumber: String
+    ) : List<InventoryRecord>
+
     @Query("DELETE FROM InventoryRecord")
     suspend fun deleteAll()
 

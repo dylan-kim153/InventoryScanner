@@ -35,11 +35,18 @@ class InventoryViewModel(
             val nextCountingNumber =
                 (lastCountingNumber ?: 0) + 1
 
+            val inventoryRecords =
+                inventoryRecordRepository.getByLocation(
+                    locationId = locationId,
+                    locationNumber = locationNumber
+                )
+
             _uiState.value = _uiState.value.copy(
                 companyId = companyId,
                 locationId = locationId,
                 locationNumber = locationNumber,
-                countingNumber = nextCountingNumber
+                countingNumber = nextCountingNumber,
+                inventoryRecords = inventoryRecords
             )
         }
     }
@@ -65,11 +72,20 @@ class InventoryViewModel(
                 quantity = quantity,
                 createdAt = LocalDateTime.now().toString()
             )
-
+            //데이터 갱신
             inventoryRecordRepository.insert(record)
 
+            //목록갱신
+            val inventoryRecords =
+                inventoryRecordRepository.getByLocation(
+                    locationId = state.locationId,
+                    locationNumber = state.locationNumber
+                )
+
+            //순번 +1
             _uiState.value = _uiState.value.copy(
-                countingNumber = state.countingNumber + 1
+                countingNumber = state.countingNumber + 1,
+                inventoryRecords = inventoryRecords
             )
         }
     }
