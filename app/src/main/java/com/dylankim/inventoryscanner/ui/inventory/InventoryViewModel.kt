@@ -60,6 +60,7 @@ class InventoryViewModel(
     ) {
         viewModelScope.launch {
             val state = _uiState.value
+            val now = LocalDateTime.now().toString()
 
             val record = InventoryRecord(
                 locationId = state.locationId,
@@ -70,7 +71,8 @@ class InventoryViewModel(
                 productName = productName,
                 price = price,
                 quantity = quantity,
-                createdAt = LocalDateTime.now().toString()
+                createdAt = now,
+                updatedAt = now
             )
             //데이터 갱신
             inventoryRecordRepository.insert(record)
@@ -129,6 +131,32 @@ class InventoryViewModel(
                 )
 
             _uiState.value = _uiState.value.copy(
+                inventoryRecords = inventoryRecords
+            )
+        }
+    }
+
+    fun updateInventoryRecord(
+        id: Long,
+        quantity: String
+    ) {
+        viewModelScope.launch {
+            val state = _uiState.value
+            val now = LocalDateTime.now().toString()
+
+            inventoryRecordRepository.updateQuantity(
+                id = id,
+                quantity = quantity,
+                updatedAt = now
+            )
+
+            val inventoryRecords =
+                inventoryRecordRepository.getByLocation(
+                    locationId = state.locationId,
+                    locationNumber = state.locationNumber
+                )
+
+            _uiState.value = state.copy(
                 inventoryRecords = inventoryRecords
             )
         }
