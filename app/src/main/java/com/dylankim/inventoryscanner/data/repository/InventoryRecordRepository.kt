@@ -30,6 +30,18 @@ class InventoryRecordRepository(
         inventoryRecordDao.deleteById(id)
     }
 
+    suspend fun updateQuantity(
+        id: Long,
+        quantity: String,
+        updatedAt: String
+    ){
+        inventoryRecordDao.updateQuantity(
+            id = id,
+            quantity = quantity,
+            updatedAt = updatedAt
+        )
+    }
+
     suspend fun insert(record: InventoryRecord) {
         inventoryRecordDao.insert(record)
     }

@@ -45,6 +45,20 @@ interface InventoryRecordDao {
     @Query("DELETE FROM InventoryRecord WHERE id = :id")
     suspend fun deleteById(id: Long)
 
+    @Query(
+        """
+        UPDATE InventoryRecord
+           SET quantity = :quantity,
+               updatedAt = :updatedAt
+        WHERE id = :id
+        """
+    )
+    suspend fun updateQuantity(
+        id: Long,
+        quantity: String,
+        updatedAt: String
+    )
+
     @Insert
     suspend fun insert(inventoryRecord: InventoryRecord): Long
 
