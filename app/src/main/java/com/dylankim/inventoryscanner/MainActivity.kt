@@ -29,6 +29,8 @@ import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
 import com.dylankim.inventoryscanner.ui.inventory.InventoryScreen
 import com.dylankim.inventoryscanner.ui.inventory.InventoryViewModelFactory
+import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultScreen
+import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultViewModelFactory
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 
 class MainActivity : ComponentActivity() {
@@ -63,6 +65,9 @@ class MainActivity : ComponentActivity() {
             productRepository = productRepository
         )
 
+        val inventoryResultFactory = InventoryResultViewModelFactory(
+            inventoryRecordRepository = inventoryRecordRepository
+        )
 
         enableEdgeToEdge()
         setContent {
@@ -100,6 +105,13 @@ class MainActivity : ComponentActivity() {
                                 locationNumber = locationNumber,
                                 factory = inventoryFactory
                             )
+                        }
+                        //재고조사 결과 화면
+                        composable("inventoryresult") {
+                            InventoryResultScreen(
+                                factory = inventoryResultFactory
+                            )
+
                         }
                     }
                 }
