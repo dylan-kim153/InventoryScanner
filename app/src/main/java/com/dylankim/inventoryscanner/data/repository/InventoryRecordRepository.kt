@@ -1,6 +1,7 @@
 package com.dylankim.inventoryscanner.data.repository
 
 import com.dylankim.inventoryscanner.data.local.dao.InventoryRecordDao
+import com.dylankim.inventoryscanner.data.local.dto.LocationInventoryResult
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 
 class InventoryRecordRepository(
@@ -24,6 +25,14 @@ class InventoryRecordRepository(
             locationId = locationId,
             locationNumber = locationNumber
         )
+    }
+
+    suspend fun getTotalQuantity(): Double {
+        return inventoryRecordDao.getTotalQuantity()
+    }
+
+    suspend fun getQuantityByLocationNumber(): List<LocationInventoryResult> {
+        return inventoryRecordDao.getQuantityByLocationNumber()
     }
 
     suspend fun deleteById(id: Long) {

@@ -4,6 +4,7 @@ import androidx.room3.Dao
 import androidx.room3.Delete
 import androidx.room3.Insert
 import androidx.room3.Query
+import com.dylankim.inventoryscanner.data.local.dto.LocationInventoryResult
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 
 @Dao
@@ -41,6 +42,29 @@ interface InventoryRecordDao {
 
     @Query("DELETE FROM InventoryRecord")
     suspend fun deleteAll()
+
+    // 전체 수량 조회
+    @Query(
+        """
+            SELECT COALESCE(SUM(CAST(quantity AS REAL)),0.0)
+            FROM InventoryRecord
+        """
+    )
+    suspend fun getTotalQuantity(): Double
+
+    // location별 수량 조회
+    @Query(
+        """
+            SELECT
+                locationId AS locationId,
+                locationNumber AS locationNumber,
+                COALESCE(SUM(CAST(quantity AS REAL)), 0.0) AS totalQuantity
+            FROM InventoryRecord
+            GROUP BY locationId, locationNumber
+            ORDER BY locationId, locationNumber
+        """
+    )
+    suspend fun getQuantityByLocationNumber(): List<LocationInventoryResult>
 
     @Query("DELETE FROM InventoryRecord WHERE id = :id")
     suspend fun deleteById(id: Long)

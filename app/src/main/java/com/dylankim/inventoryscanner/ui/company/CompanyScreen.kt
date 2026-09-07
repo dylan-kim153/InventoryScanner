@@ -86,6 +86,17 @@ fun CompanyScreen(
             ){
                 Text("재고조사 시작")
             }
+
+
+
+        }
+
+        Button(
+            onClick = {
+                navController.navigate("inventoryresult")
+            }
+        ) {
+            Text("재고조사 결과")
         }
     }
 }

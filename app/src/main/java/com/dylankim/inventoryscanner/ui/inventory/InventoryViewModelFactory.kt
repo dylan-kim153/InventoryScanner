@@ -22,7 +22,7 @@ class InventoryViewModelFactory(
         }
 
         throw IllegalArgumentException(
-            "Unknown ViewModel Class"
+            "Unknown ViewModel class: ${modelClass.name}"
         )
     }
 }

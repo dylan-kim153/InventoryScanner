@@ -18,6 +18,6 @@ class CompanyViewModelFactory(
                 locationRepository
             ) as T
         }
-        throw IllegalArgumentException("Unknown Viewmodel class")
+        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 }
