@@ -107,9 +107,18 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         //재고조사 결과 화면
-                        composable("inventoryresult") {
+                        composable("inventoryresult/{companyId}") { backStackEntry ->
+
+                            val companyId =
+                                backStackEntry.arguments
+                                    ?.getString("companyId")
+                                    ?.toLongOrNull()
+                                    ?: return@composable
+
                             InventoryResultScreen(
-                                factory = inventoryResultFactory
+                                companyId = companyId,
+                                factory = inventoryResultFactory,
+                                navController = navController
                             )
 
                         }
