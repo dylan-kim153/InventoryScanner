@@ -9,4 +9,8 @@ class LocationRepository(
     suspend fun getLocationByCompanyId(companyId: Long): List<Location>{
         return locationDao.getLocationsByCompanyId(companyId)
     }
+
+    suspend fun getLocationById(locationId: Long): Location? {
+        return locationDao.getById(locationId)
+    }
 }

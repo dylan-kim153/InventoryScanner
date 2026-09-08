@@ -13,6 +13,9 @@ interface CompanyDao {
     @Query("SELECT COUNT(*) FROM company")
     suspend fun getCount(): Int
 
+    @Query("SELECT * FROM company WHERE id = :companyId")
+    suspend fun getById(companyId: Long): Company?
+
     @Insert
     suspend fun insert(company: Company): Long
 

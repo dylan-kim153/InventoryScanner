@@ -10,6 +10,9 @@ interface LocationDao {
     @Query("SELECT * FROM location where companyId = :companyId")
     suspend fun getLocationsByCompanyId(companyId: Long): List<Location>
 
+    @Query("SELECT * FROM location WHERE id = :locationId")
+    suspend fun getById(locationId: Long): Location?
+
     @Insert
     suspend fun insert(location: Location): Long
 }

@@ -3,7 +3,9 @@ package com.dylankim.inventoryscanner.ui.inventory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
+import com.dylankim.inventoryscanner.data.repository.CompanyRepository
 import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
+import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.data.repository.ProductRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,9 @@ import java.time.LocalDateTime
 
 class InventoryViewModel(
     private val inventoryRecordRepository: InventoryRecordRepository,
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val companyRepository: CompanyRepository,
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(InventoryUiState())
     val uiState: StateFlow<InventoryUiState> = _uiState.asStateFlow()
@@ -41,9 +45,14 @@ class InventoryViewModel(
                     locationNumber = locationNumber
                 )
 
+            val company = companyRepository.getCompanyById(companyId)
+            val location = locationRepository.getLocationById(locationId)
+
             _uiState.value = _uiState.value.copy(
                 companyId = companyId,
+                companyName = company?.name ?: "",
                 locationId = locationId,
+                locationName = location?.name ?: "",
                 locationNumber = locationNumber,
                 countingNumber = nextCountingNumber,
                 inventoryRecords = inventoryRecords
