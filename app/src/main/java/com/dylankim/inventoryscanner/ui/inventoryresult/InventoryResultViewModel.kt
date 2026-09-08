@@ -7,6 +7,7 @@ import com.dylankim.inventoryscanner.ui.inventory.InventoryUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class InventoryResultViewModel(
@@ -26,6 +27,26 @@ class InventoryResultViewModel(
                 totalQuantity = totalQuantity,
                 locationResults = locationResults
             )
+        }
+    }
+
+    fun selectLocation(
+        locationId: Long,
+        locationNumber: String
+    ){
+        viewModelScope.launch{
+            val detailRecords = inventoryRecordRepository.getByLocation(
+                locationId = locationId,
+                locationNumber = locationNumber,
+            )
+
+            _uiState.update {
+                it.copy(
+                    selectedLocationId = locationId,
+                    selectedLocationNumber = locationNumber,
+                    detailRecords = detailRecords
+                )
+            }
         }
     }
 }

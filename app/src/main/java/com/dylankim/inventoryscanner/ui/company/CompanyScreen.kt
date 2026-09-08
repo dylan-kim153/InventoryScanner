@@ -1,5 +1,6 @@
 package com.dylankim.inventoryscanner.ui.company
 
+import android.R.attr.enabled
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -93,8 +94,13 @@ fun CompanyScreen(
 
         Button(
             onClick = {
-                navController.navigate("inventoryresult")
-            }
+
+                val companyId = uiState.selectedCompany?.id ?: return@Button
+
+                navController.navigate("inventoryresult/$companyId")
+
+            },
+            enabled = uiState.selectedCompany != null
         ) {
             Text("재고조사 결과")
         }
