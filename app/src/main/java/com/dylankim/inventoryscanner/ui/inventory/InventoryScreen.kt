@@ -51,10 +51,10 @@ fun InventoryScreen(
     ) {
 
         Text(
-            text = "업체: ${uiState.companyId}"
+            text = "업체: ${uiState.companyName}"
         )
         Text(
-            text = "장소: ${uiState.locationId}"
+            text = "장소: ${uiState.locationName}"
         )
         Text(
             text = "위치: ${uiState.locationNumber}"

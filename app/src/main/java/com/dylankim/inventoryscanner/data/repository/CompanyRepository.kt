@@ -10,6 +10,10 @@ class CompanyRepository(
         return companyDao.getAll()
     }
 
+    suspend fun getCompanyById(companyId: Long): Company? {
+        return companyDao.getById(companyId)
+    }
+
     suspend fun getCompanyCount(): Int{
         return companyDao.getCount()
     }

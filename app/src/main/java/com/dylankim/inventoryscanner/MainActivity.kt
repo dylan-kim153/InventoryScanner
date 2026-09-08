@@ -62,7 +62,9 @@ class MainActivity : ComponentActivity() {
 
         val inventoryFactory = InventoryViewModelFactory(
             inventoryRecordRepository = inventoryRecordRepository,
-            productRepository = productRepository
+            productRepository = productRepository,
+            companyRepository = companyRepository,
+            locationRepository = locationRepository
         )
 
         val inventoryResultFactory = InventoryResultViewModelFactory(
