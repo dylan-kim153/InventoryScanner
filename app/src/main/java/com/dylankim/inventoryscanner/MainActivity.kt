@@ -68,7 +68,8 @@ class MainActivity : ComponentActivity() {
         )
 
         val inventoryResultFactory = InventoryResultViewModelFactory(
-            inventoryRecordRepository = inventoryRecordRepository
+            inventoryRecordRepository = inventoryRecordRepository,
+            locationRepository = locationRepository
         )
 
         enableEdgeToEdge()

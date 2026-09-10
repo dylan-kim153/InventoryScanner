@@ -57,10 +57,13 @@ interface InventoryRecordDao {
         """
             SELECT
                 locationId AS locationId,
+                Location.name AS locationName,
                 locationNumber AS locationNumber,
                 COALESCE(SUM(CAST(quantity AS REAL)), 0.0) AS totalQuantity
             FROM InventoryRecord
-            GROUP BY locationId, locationNumber
+            INNER JOIN Location
+                ON InventoryRecord.locationId = Location.id
+            GROUP BY locationId, Location.name, locationNumber
             ORDER BY locationId, locationNumber
         """
     )
