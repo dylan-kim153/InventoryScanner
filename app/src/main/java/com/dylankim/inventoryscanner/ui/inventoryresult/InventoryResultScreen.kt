@@ -50,7 +50,7 @@ fun InventoryResultScreen(
 
         uiState.locationResults.forEach { result ->
             Text(
-                text = "${result.locationId} / " +
+                text = "${result.locationName} / " +
                         "${result.locationNumber} / " +
                         "${result.totalQuantity}",
                 modifier = Modifier.clickable{
@@ -67,7 +67,7 @@ fun InventoryResultScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text( text = "선택한 Location : " +
-                        "${uiState.selectedLocationId} / " +
+                        "${uiState.selectedLocationName} / " +
                         "${uiState.selectedLocationNumber}"
             )
 

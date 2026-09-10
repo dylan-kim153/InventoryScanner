@@ -7,6 +7,7 @@ data class InventoryResultUiState(
     val totalQuantity: Double = 0.0,
     val locationResults: List<LocationInventoryResult> = emptyList(),
     val selectedLocationId: Long? = null,
+    val selectedLocationName: String? = null,
     val selectedLocationNumber: String? = null,
     val detailRecords: List<InventoryRecord> = emptyList()
 )
