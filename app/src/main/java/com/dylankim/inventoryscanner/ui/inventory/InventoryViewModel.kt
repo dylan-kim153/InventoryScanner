@@ -107,13 +107,19 @@ class InventoryViewModel(
     fun findProduct(barcode: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
-                product = null
+                product = null,
+                productError = null
             )
 
             val product = productRepository.getProductByBarcode(barcode)
 
             _uiState.value = _uiState.value.copy(
-                product = product
+                product = product,
+                productError = if (product == null) {
+                    "등록되지 않은 상품입니다."
+                } else {
+                    null
+                }
             )
         }
     }

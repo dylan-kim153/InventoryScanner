@@ -108,18 +108,12 @@ fun InventoryScreen(
         }
 
         uiState.product?.let { product ->
-            Text(
-                text = "상품명 : ${product.name}"
-            )
-            Text(
-                text = "가격 : ${product.price}"
-            )
-        } ?: run {
-            if (uiState.barcode.isNotBlank()) {
-                Text(
-                    text = "미등록상품"
-                )
-            }
+            Text(text = "상품명 : ${product.name}")
+            Text(text = "가격 : ${product.price}")
+        }
+
+        uiState.productError?.let { error ->
+            Text(text = error)
         }
 
         OutlinedTextField(
@@ -139,10 +133,17 @@ fun InventoryScreen(
                         price = product.price,
                         quantity = uiState.quantity
                     )
-
+                } ?: run {
+                    viewModel.saveInventoryRecord(
+                        barcode = uiState.barcode,
+                        productCode = "",
+                        productName = "미등록상품",
+                        price = "0",
+                        quantity = uiState.quantity
+                    )
                 }
             },
-            enabled = uiState.product != null &&
+            enabled = uiState.barcode.isNotBlank() &&
                 uiState.quantity.toDoubleOrNull()?.let { it > 0 } == true
         ) {
             Text("저장")

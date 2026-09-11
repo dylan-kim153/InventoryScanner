@@ -11,6 +11,7 @@ data class InventoryUiState(
     val locationNumber: String = "",
     val countingNumber: Int = 1,
     val product: Product? = null,
+    val productError: String? = null,
     val barcode: String = "",
     val quantity: String = "",
     val inventoryRecords: List<InventoryRecord> = emptyList()
