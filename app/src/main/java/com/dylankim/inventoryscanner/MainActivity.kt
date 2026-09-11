@@ -24,6 +24,7 @@ import com.dylankim.inventoryscanner.data.repository.CompanyRepository
 import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
 import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.data.repository.ProductRepository
+import com.dylankim.inventoryscanner.ui.bacodescanner.BarcodeScannerScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModel
 import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
@@ -106,7 +107,20 @@ class MainActivity : ComponentActivity() {
                                 companyId = companyId,
                                 locationId = locationId,
                                 locationNumber = locationNumber,
-                                factory = inventoryFactory
+                                factory = inventoryFactory,
+                                navController = navController
+                            )
+                        }
+                        //카메라 바코드 스캔 화면
+                        composable("barcodeScanner") {
+                            BarcodeScannerScreen(
+                                onBarcodeScanned = { barcode ->
+                                    navController.previousBackStackEntry
+                                        ?.savedStateHandle
+                                        ?.set("scannedBarcode", barcode)
+
+                                    navController.popBackStack()
+                                }
                             )
                         }
                         //재고조사 결과 화면
@@ -129,21 +143,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    InventoryScannerTheme {
-        Greeting("Android")
     }
 }
