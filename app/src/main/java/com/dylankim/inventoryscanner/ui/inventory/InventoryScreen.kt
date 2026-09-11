@@ -18,6 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -37,6 +39,8 @@ fun InventoryScreen(
         factory = factory
     )
     val uiState by viewModel.uiState.collectAsState()
+
+    val barcodeFocusRequester = remember { FocusRequester() }
 
     val scannedBarcode =
         navController.currentBackStackEntry
@@ -64,6 +68,14 @@ fun InventoryScreen(
         )
     }
 
+    //재고조사 후 커서 바코드 이동
+    LaunchedEffect(uiState.saveCompleted) {
+        if (uiState.saveCompleted) {
+            barcodeFocusRequester.requestFocus()
+            viewModel.resetSaveCompleted()
+        }
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -84,6 +96,7 @@ fun InventoryScreen(
         )
 
         OutlinedTextField(
+            modifier = Modifier.focusRequester(barcodeFocusRequester),
             value = uiState.barcode,
             onValueChange = viewModel::updateBarcode,
             label = { Text("바코드")},
@@ -108,18 +121,12 @@ fun InventoryScreen(
         }
 
         uiState.product?.let { product ->
-            Text(
-                text = "상품명 : ${product.name}"
-            )
-            Text(
-                text = "가격 : ${product.price}"
-            )
-        } ?: run {
-            if (uiState.barcode.isNotBlank()) {
-                Text(
-                    text = "미등록상품"
-                )
-            }
+            Text(text = "상품명 : ${product.name}")
+            Text(text = "가격 : ${product.price}")
+        }
+
+        uiState.productError?.let { error ->
+            Text(text = error)
         }
 
         OutlinedTextField(
@@ -139,11 +146,18 @@ fun InventoryScreen(
                         price = product.price,
                         quantity = uiState.quantity
                     )
-
+                } ?: run {
+                    viewModel.saveInventoryRecord(
+                        barcode = uiState.barcode,
+                        productCode = "",
+                        productName = "미등록상품",
+                        price = "0",
+                        quantity = uiState.quantity
+                    )
                 }
             },
-            enabled = uiState.product != null &&
-                uiState.quantity.isNotBlank()
+            enabled = uiState.barcode.isNotBlank() &&
+                uiState.quantity.toDoubleOrNull()?.let { it > 0 } == true
         ) {
             Text("저장")
         }

@@ -96,21 +96,37 @@ class InventoryViewModel(
             //순번 +1
             _uiState.value = _uiState.value.copy(
                 countingNumber = state.countingNumber + 1,
-                inventoryRecords = inventoryRecords
+                inventoryRecords = inventoryRecords,
+                barcode = "",
+                product = null,
+                quantity = "",
+                saveCompleted = true
             )
         }
+    }
+
+    fun resetSaveCompleted() {
+        _uiState.value = _uiState.value.copy(
+            saveCompleted = false
+        )
     }
 
     fun findProduct(barcode: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
-                product = null
+                product = null,
+                productError = null
             )
 
             val product = productRepository.getProductByBarcode(barcode)
 
             _uiState.value = _uiState.value.copy(
-                product = product
+                product = product,
+                productError = if (product == null) {
+                    "등록되지 않은 상품입니다."
+                } else {
+                    null
+                }
             )
         }
     }
