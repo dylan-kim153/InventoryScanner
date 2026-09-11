@@ -96,7 +96,10 @@ class InventoryViewModel(
             //순번 +1
             _uiState.value = _uiState.value.copy(
                 countingNumber = state.countingNumber + 1,
-                inventoryRecords = inventoryRecords
+                inventoryRecords = inventoryRecords,
+                barcode = "",
+                product = null,
+                quantity = ""
             )
         }
     }
