@@ -99,9 +99,16 @@ class InventoryViewModel(
                 inventoryRecords = inventoryRecords,
                 barcode = "",
                 product = null,
-                quantity = ""
+                quantity = "",
+                saveCompleted = true
             )
         }
+    }
+
+    fun resetSaveCompleted() {
+        _uiState.value = _uiState.value.copy(
+            saveCompleted = false
+        )
     }
 
     fun findProduct(barcode: String) {
