@@ -143,7 +143,7 @@ fun InventoryScreen(
                 }
             },
             enabled = uiState.product != null &&
-                uiState.quantity.isNotBlank()
+                uiState.quantity.toDoubleOrNull()?.let { it > 0 } == true
         ) {
             Text("저장")
         }
