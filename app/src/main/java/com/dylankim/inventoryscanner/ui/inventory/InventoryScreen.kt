@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import org.w3c.dom.Text
 import kotlin.math.sin
 
@@ -29,12 +30,31 @@ fun InventoryScreen(
     locationId: Long,
     locationNumber: String,
     factory: InventoryViewModelFactory,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     val viewModel: InventoryViewModel = viewModel(
         factory = factory
     )
     val uiState by viewModel.uiState.collectAsState()
+
+    val scannedBarcode =
+        navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getStateFlow<String?>("scannedBarcode", null)
+
+    LaunchedEffect(scannedBarcode) {
+        scannedBarcode?.collect { barcode ->
+            if (barcode != null) {
+                viewModel.updateBarcode(barcode)
+                viewModel.findProduct(barcode)
+
+                navController.currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.set("scannedBarcode", null)
+            }
+        }
+    }
 
     LaunchedEffect(companyId,locationId,locationNumber){
         viewModel.initialize(
@@ -69,6 +89,14 @@ fun InventoryScreen(
             label = { Text("바코드")},
             singleLine = true
         )
+
+        Button(
+            onClick = {
+                navController.navigate("barcodeScanner")
+            }
+        ) {
+            Text("카메라 스캔")
+        }
 
         Button(
             onClick = {
