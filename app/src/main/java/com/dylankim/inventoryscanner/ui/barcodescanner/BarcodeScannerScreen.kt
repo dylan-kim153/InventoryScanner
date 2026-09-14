@@ -1,4 +1,4 @@
-package com.dylankim.inventoryscanner.ui.bacodescanner
+package com.dylankim.inventoryscanner.ui.barcodescanner
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts

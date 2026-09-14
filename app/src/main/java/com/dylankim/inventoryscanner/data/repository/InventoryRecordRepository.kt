@@ -1,6 +1,7 @@
 package com.dylankim.inventoryscanner.data.repository
 
 import com.dylankim.inventoryscanner.data.local.dao.InventoryRecordDao
+import com.dylankim.inventoryscanner.data.local.dto.InventoryCsvRow
 import com.dylankim.inventoryscanner.data.local.dto.LocationInventoryResult
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 
@@ -33,6 +34,10 @@ class InventoryRecordRepository(
 
     suspend fun getQuantityByLocationNumber(): List<LocationInventoryResult> {
         return inventoryRecordDao.getQuantityByLocationNumber()
+    }
+
+    suspend fun getAllForCsvExport(): List<InventoryCsvRow> {
+        return inventoryRecordDao.getAllForCsvExport()
     }
 
     suspend fun deleteById(id: Long) {
