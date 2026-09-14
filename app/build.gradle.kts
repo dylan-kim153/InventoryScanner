@@ -63,6 +63,7 @@ dependencies {
     // ML Kit
     implementation(libs.mlkit.barcode.scanning)
 
+    implementation(libs.androidx.compose.material.icons.extended)
 
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
