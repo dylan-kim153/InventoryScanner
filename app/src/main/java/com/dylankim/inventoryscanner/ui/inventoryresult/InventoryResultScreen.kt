@@ -1,5 +1,7 @@
 package com.dylankim.inventoryscanner.ui.inventoryresult
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.dylankim.inventoryscanner.data.export.CsvFileWriter
+import com.dylankim.inventoryscanner.data.export.CsvGenerator
 
 @Composable
 fun InventoryResultScreen(
@@ -26,8 +31,22 @@ fun InventoryResultScreen(
     val viewModel: InventoryResultViewModel = viewModel(
         factory = factory
     )
+    val context = LocalContext.current
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val csvFileLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri ->
+        if (uri != null) {
+            val csv = CsvGenerator.generate(uiState.csvRows)
+
+            CsvFileWriter(context).write(
+                uri = uri,
+                csv = csv
+            )
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.loadResult()
@@ -95,6 +114,16 @@ fun InventoryResultScreen(
             ) {
                 Text("재고조사 이동")
             }
+        }
+
+        Button(
+            onClick = {
+                csvFileLauncher.launch(
+                    "재고조사_${System.currentTimeMillis()}.csv"
+                )
+            }
+        ) {
+            Text("CSV 내보내기")
         }
     }
 

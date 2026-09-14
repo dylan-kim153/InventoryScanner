@@ -25,9 +25,13 @@ class InventoryResultViewModel(
 
             val locationResults = inventoryRecordRepository.getQuantityByLocationNumber()
 
+            val csvRows =
+                inventoryRecordRepository.getAllForCsvExport()
+
             _uiState.value = InventoryResultUiState(
                 totalQuantity = totalQuantity,
-                locationResults = locationResults
+                locationResults = locationResults,
+                csvRows = csvRows
             )
         }
     }
