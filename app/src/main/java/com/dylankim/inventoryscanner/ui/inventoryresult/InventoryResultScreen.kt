@@ -21,6 +21,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.dylankim.inventoryscanner.data.export.CsvFileWriter
 import com.dylankim.inventoryscanner.data.export.CsvGenerator
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun InventoryResultScreen(
@@ -116,10 +118,12 @@ fun InventoryResultScreen(
             }
         }
 
+        val today = LocalDate.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
         Button(
             onClick = {
                 csvFileLauncher.launch(
-                    "재고조사_${System.currentTimeMillis()}.csv"
+                    "재고조사_전체_${today}.csv"
                 )
             }
         ) {
