@@ -17,9 +17,24 @@ object CsvGenerator {
                 row.locationName,
                 row.locationNumber,
                 row.createdAt
-            ).joinToString(",")
+            ).joinToString(",") { value ->
+                escape(value.toString())
+            }
         }
 
         return "$header\n$data"
+    }
+
+    private fun escape(value: String): String {
+        return if (
+            value.contains(",") ||
+            value.contains("\"") ||
+            value.contains("\n") ||
+            value.contains("\r")
+        ) {
+            "\"${value.replace("\"", "\"\"")}\""
+        } else {
+            value
+        }
     }
 }
