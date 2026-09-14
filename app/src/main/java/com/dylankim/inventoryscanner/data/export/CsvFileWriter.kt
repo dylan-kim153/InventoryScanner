@@ -8,9 +8,12 @@ class CsvFileWriter(
 ) {
 
     fun write(uri: Uri, csv: String) {
-        context.contentResolver.openOutputStream(uri)?.use { outputStream ->
-            outputStream.write("\uFEFF".toByteArray(Charsets.UTF_8))
-            outputStream.write(csv.toByteArray(Charsets.UTF_8))
+        val outputStream = context.contentResolver.openOutputStream(uri)
+            ?: throw IllegalStateException("파일을 열 수 없습니다.")
+
+        outputStream.use {
+            it.write("\uFEFF".toByteArray(Charsets.UTF_8))
+            it.write(csv.toByteArray(Charsets.UTF_8))
         }
     }
 }

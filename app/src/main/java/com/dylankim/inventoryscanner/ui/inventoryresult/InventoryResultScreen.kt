@@ -1,5 +1,6 @@
 package com.dylankim.inventoryscanner.ui.inventoryresult
 
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
@@ -40,13 +41,31 @@ fun InventoryResultScreen(
     val csvFileLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("text/csv")
     ) { uri ->
-        if (uri != null) {
+        if (uri == null) {
+            // 사용자가 저장 화면에서 취소한 경우
+            return@rememberLauncherForActivityResult
+        }
+
+        try {
             val csv = CsvGenerator.generate(uiState.csvRows)
 
             CsvFileWriter(context).write(
                 uri = uri,
                 csv = csv
             )
+
+            Toast.makeText(
+                context,
+                "CSV 파일이 저장되었습니다.",
+                Toast.LENGTH_SHORT
+            ).show()
+
+        } catch (e: Exception) {
+            Toast.makeText(
+                context,
+                "CSV 파일 저장에 실패했습니다.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
