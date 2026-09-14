@@ -6,9 +6,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -60,7 +64,7 @@ fun InventoryScreen(
         }
     }
 
-    LaunchedEffect(companyId,locationId,locationNumber){
+    LaunchedEffect(companyId, locationId, locationNumber) {
         viewModel.initialize(
             companyId = companyId,
             locationId = locationId,
@@ -92,14 +96,14 @@ fun InventoryScreen(
             text = "위치: ${uiState.locationNumber}"
         )
         Text(
-            text = "순번: ${uiState.countingNumber.toString().padStart(4,'0')}"
+            text = "순번: ${uiState.countingNumber.toString().padStart(4, '0')}"
         )
 
         OutlinedTextField(
             modifier = Modifier.focusRequester(barcodeFocusRequester),
             value = uiState.barcode,
             onValueChange = viewModel::updateBarcode,
-            label = { Text("바코드")},
+            label = { Text("바코드") },
             singleLine = true
         )
 
@@ -132,7 +136,7 @@ fun InventoryScreen(
         OutlinedTextField(
             value = uiState.quantity,
             onValueChange = viewModel::updateQuantity,
-            label = { Text("수량")},
+            label = { Text("수량") },
             singleLine = true
         )
 
@@ -157,17 +161,55 @@ fun InventoryScreen(
                 }
             },
             enabled = uiState.barcode.isNotBlank() &&
-                uiState.quantity.toDoubleOrNull()?.let { it > 0 } == true
+                    uiState.quantity.toDoubleOrNull()?.let { it > 0 } == true
         ) {
             Text("저장")
         }
+
+
+        OutlinedTextField(
+            value = uiState.searchQuery,
+            onValueChange = viewModel::updateSearchQuery,
+            label = { Text("상품명 / 바코드 / 상품코드 검색") },
+            singleLine = true,
+            modifier = Modifier.fillMaxWidth(),
+            trailingIcon = {
+                if(uiState.searchQuery.isNotEmpty()){
+                    IconButton(
+                        onClick = {
+                            viewModel.updateSearchQuery("")
+                        }
+                    ) {
+                        Icon(
+                           imageVector = Icons.Default.Clear,
+                            contentDescription = "검색어 지우기"
+                        )
+                    }
+                }
+            }
+        )
 
         Text(
             text = "재고조사 내역"
         )
 
 
-        uiState.inventoryRecords.forEach { record ->
+
+        val filteredRecords = uiState.inventoryRecords.filter { record ->
+            val query = uiState.searchQuery.trim()
+
+            query.isBlank() ||
+                    record.productName.contains(query, ignoreCase = true) ||
+                    record.barcode.contains(query, ignoreCase = true) ||
+                    record.productCode.contains(query,ignoreCase = true)
+
+        }
+
+        if (uiState.searchQuery.isNotBlank() && filteredRecords.isEmpty()) {
+            Text(text = "검색 결과가 없습니다.")
+        }
+
+        filteredRecords.forEach { record ->
 
             var editQuantity by remember(
                 record.id,
@@ -183,7 +225,7 @@ fun InventoryScreen(
             ) {
                 Text(
                     modifier = Modifier.weight(1f),
-                    text = "${record.countingNumber.toString().padStart(4,'0')} / " +
+                    text = "${record.countingNumber.toString().padStart(4, '0')} / " +
                             "${record.productName} "
 
                 )
@@ -193,7 +235,7 @@ fun InventoryScreen(
                     onValueChange = {
                         editQuantity = it
                     },
-                    label = {Text("수량")},
+                    label = { Text("수량") },
                     singleLine = true,
                     modifier = Modifier.width(100.dp)
                 )
@@ -202,7 +244,7 @@ fun InventoryScreen(
                     onClick = {
                         viewModel.updateInventoryRecord(
                             id = record.id,
-                            quantity =editQuantity
+                            quantity = editQuantity
                         )
                     },
                     enabled = editQuantity.isNotBlank()
