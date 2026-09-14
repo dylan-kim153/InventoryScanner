@@ -9,6 +9,7 @@ class CsvFileWriter(
 
     fun write(uri: Uri, csv: String) {
         context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+            outputStream.write("\uFEFF".toByteArray(Charsets.UTF_8))
             outputStream.write(csv.toByteArray(Charsets.UTF_8))
         }
     }
