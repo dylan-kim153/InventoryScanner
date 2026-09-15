@@ -2,8 +2,9 @@ package com.dylankim.inventoryscanner.data.repository
 
 import com.dylankim.inventoryscanner.data.local.dao.CompanyDao
 import com.dylankim.inventoryscanner.data.local.entity.Company
+import javax.inject.Inject
 
-class CompanyRepository(
+class CompanyRepository @Inject constructor(
     private val companyDao: CompanyDao
 ) {
     suspend fun getCompanies(): List<Company>{

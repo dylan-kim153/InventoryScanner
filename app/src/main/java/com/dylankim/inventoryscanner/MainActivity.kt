@@ -24,7 +24,9 @@ import com.dylankim.inventoryscanner.ui.inventory.InventoryViewModelFactory
 import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultScreen
 import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultViewModelFactory
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

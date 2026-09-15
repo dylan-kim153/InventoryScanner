@@ -2,8 +2,10 @@ package com.dylankim.inventoryscanner.data.repository
 
 import com.dylankim.inventoryscanner.data.local.dao.LocationDao
 import com.dylankim.inventoryscanner.data.local.entity.Location
+import javax.inject.Inject
 
-class LocationRepository(
+
+class LocationRepository @Inject constructor(
     private val locationDao: LocationDao
 ) {
     suspend fun getLocationByCompanyId(companyId: Long): List<Location>{
