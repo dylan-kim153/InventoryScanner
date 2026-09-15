@@ -1,5 +1,8 @@
 package com.dylankim.inventoryscanner.ui.inventoryresult
 
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,10 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.dylankim.inventoryscanner.data.export.CsvFileWriter
+import com.dylankim.inventoryscanner.data.export.CsvGenerator
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun InventoryResultScreen(
@@ -26,8 +34,40 @@ fun InventoryResultScreen(
     val viewModel: InventoryResultViewModel = viewModel(
         factory = factory
     )
+    val context = LocalContext.current
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    val csvFileLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/csv")
+    ) { uri ->
+        if (uri == null) {
+            // 사용자가 저장 화면에서 취소한 경우
+            return@rememberLauncherForActivityResult
+        }
+
+        try {
+            val csv = CsvGenerator.generate(uiState.csvRows)
+
+            CsvFileWriter(context).write(
+                uri = uri,
+                csv = csv
+            )
+
+            Toast.makeText(
+                context,
+                "CSV 파일이 저장되었습니다.",
+                Toast.LENGTH_SHORT
+            ).show()
+
+        } catch (e: Exception) {
+            Toast.makeText(
+                context,
+                "CSV 파일 저장에 실패했습니다.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.loadResult()
@@ -95,6 +135,18 @@ fun InventoryResultScreen(
             ) {
                 Text("재고조사 이동")
             }
+        }
+
+        val today = LocalDate.now()
+            .format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+        Button(
+            onClick = {
+                csvFileLauncher.launch(
+                    "재고조사_전체_${today}.csv"
+                )
+            }
+        ) {
+            Text("CSV 내보내기")
         }
     }
 

@@ -1,5 +1,6 @@
 package com.dylankim.inventoryscanner.ui.inventoryresult
 
+import com.dylankim.inventoryscanner.data.local.dto.InventoryCsvRow
 import com.dylankim.inventoryscanner.data.local.dto.LocationInventoryResult
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 
@@ -9,5 +10,6 @@ data class InventoryResultUiState(
     val selectedLocationId: Long? = null,
     val selectedLocationName: String? = null,
     val selectedLocationNumber: String? = null,
-    val detailRecords: List<InventoryRecord> = emptyList()
+    val detailRecords: List<InventoryRecord> = emptyList(),
+    val csvRows: List<InventoryCsvRow> = emptyList()
 )

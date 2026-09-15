@@ -4,6 +4,7 @@ import androidx.room3.Dao
 import androidx.room3.Delete
 import androidx.room3.Insert
 import androidx.room3.Query
+import com.dylankim.inventoryscanner.data.local.dto.InventoryCsvRow
 import com.dylankim.inventoryscanner.data.local.dto.LocationInventoryResult
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
 
@@ -68,6 +69,28 @@ interface InventoryRecordDao {
         """
     )
     suspend fun getQuantityByLocationNumber(): List<LocationInventoryResult>
+
+    // 결과파일 CSV 내보내기
+    @Query(
+        """
+        SELECT
+            InventoryRecord.barcode AS barcode,
+            InventoryRecord.productName AS productName,
+            InventoryRecord.quantity AS quantity,
+            InventoryRecord.price AS price,
+            InventoryRecord.countingNumber AS countingNumber,
+            Location.name AS locationName,
+            InventoryRecord.locationNumber AS locationNumber,
+            InventoryRecord.createdAt AS createdAt
+        FROM InventoryRecord
+        INNER JOIN Location
+            ON InventoryRecord.locationId = Location.id
+        ORDER BY InventoryRecord.locationId,
+                 InventoryRecord.locationNumber,
+                 InventoryRecord.countingNumber
+        """
+    )
+    suspend fun getAllForCsvExport(): List<InventoryCsvRow>
 
     @Query("DELETE FROM InventoryRecord WHERE id = :id")
     suspend fun deleteById(id: Long)
