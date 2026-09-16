@@ -7,13 +7,16 @@ import com.dylankim.inventoryscanner.data.repository.CompanyRepository
 import com.dylankim.inventoryscanner.data.repository.InventoryRecordRepository
 import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.data.repository.ProductRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import javax.inject.Inject
 
-class InventoryViewModel(
+@HiltViewModel
+class InventoryViewModel @Inject constructor(
     private val inventoryRecordRepository: InventoryRecordRepository,
     private val productRepository: ProductRepository,
     private val companyRepository: CompanyRepository,

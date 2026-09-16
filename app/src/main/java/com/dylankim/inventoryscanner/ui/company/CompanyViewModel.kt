@@ -7,12 +7,16 @@ import com.dylankim.inventoryscanner.data.local.entity.Company
 import com.dylankim.inventoryscanner.data.local.entity.Location
 import com.dylankim.inventoryscanner.data.repository.CompanyRepository
 import com.dylankim.inventoryscanner.data.repository.LocationRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class CompanyViewModel(
+
+@HiltViewModel
+class CompanyViewModel @Inject constructor(
     private val companyRepository: CompanyRepository,
     private val locationRepository: LocationRepository
 ) : ViewModel() {

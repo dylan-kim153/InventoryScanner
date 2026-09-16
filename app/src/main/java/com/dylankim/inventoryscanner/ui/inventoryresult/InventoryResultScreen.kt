@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -28,12 +29,10 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun InventoryResultScreen(
     companyId: Long,
-    factory: InventoryResultViewModelFactory,
     navController: NavController
 ) {
-    val viewModel: InventoryResultViewModel = viewModel(
-        factory = factory
-    )
+    val viewModel: InventoryResultViewModel = hiltViewModel()
+
     val context = LocalContext.current
 
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

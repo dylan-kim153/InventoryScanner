@@ -4,8 +4,9 @@ import com.dylankim.inventoryscanner.data.local.dao.InventoryRecordDao
 import com.dylankim.inventoryscanner.data.local.dto.InventoryCsvRow
 import com.dylankim.inventoryscanner.data.local.dto.LocationInventoryResult
 import com.dylankim.inventoryscanner.data.local.entity.InventoryRecord
+import javax.inject.Inject
 
-class InventoryRecordRepository(
+class InventoryRecordRepository @Inject constructor(
     private val inventoryRecordDao: InventoryRecordDao
 ) {
     suspend fun getLastCountingNumber(
