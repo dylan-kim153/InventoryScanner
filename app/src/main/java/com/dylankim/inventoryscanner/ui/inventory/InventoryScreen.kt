@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import org.w3c.dom.Text
@@ -35,13 +36,11 @@ fun InventoryScreen(
     companyId: Long,
     locationId: Long,
     locationNumber: String,
-    factory: InventoryViewModelFactory,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    val viewModel: InventoryViewModel = viewModel(
-        factory = factory
-    )
+    val viewModel: InventoryViewModel = hiltViewModel()
+
     val uiState by viewModel.uiState.collectAsState()
 
     val barcodeFocusRequester = remember { FocusRequester() }

@@ -19,9 +19,7 @@ import com.dylankim.inventoryscanner.data.repository.ProductRepository
 import com.dylankim.inventoryscanner.ui.barcodescanner.BarcodeScannerScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.inventory.InventoryScreen
-import com.dylankim.inventoryscanner.ui.inventory.InventoryViewModelFactory
 import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultScreen
-import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultViewModelFactory
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,39 +28,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val database = InventoryDatabase.getDatabase(applicationContext)
-
-        val companyRepository = CompanyRepository(
-            database.companyDao()
-        )
-
-        val locationRepository = LocationRepository(
-            database.locationDao()
-        )
-
-        val inventoryRecordRepository = InventoryRecordRepository(
-            database.inventoryRecordDao()
-        )
-
-        val productRepository = ProductRepository(
-            database.productDao()
-        )
-
-        val inventoryFactory = InventoryViewModelFactory(
-            inventoryRecordRepository = inventoryRecordRepository,
-            productRepository = productRepository,
-            companyRepository = companyRepository,
-            locationRepository = locationRepository
-        )
-
-        val inventoryResultFactory = InventoryResultViewModelFactory(
-            inventoryRecordRepository = inventoryRecordRepository,
-            locationRepository = locationRepository
-        )
-
         enableEdgeToEdge()
         setContent {
-
 
             InventoryScannerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
@@ -93,7 +60,6 @@ class MainActivity : ComponentActivity() {
                                 companyId = companyId,
                                 locationId = locationId,
                                 locationNumber = locationNumber,
-                                factory = inventoryFactory,
                                 navController = navController
                             )
                         }
@@ -120,7 +86,6 @@ class MainActivity : ComponentActivity() {
 
                             InventoryResultScreen(
                                 companyId = companyId,
-                                factory = inventoryResultFactory,
                                 navController = navController
                             )
 
