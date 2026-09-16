@@ -17,17 +17,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.dylankim.inventoryscanner.data.local.entity.Company
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @Composable
 fun CompanyScreen(
-    factory: CompanyViewModelFactory,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
 
-    val viewModel: CompanyViewModel = viewModel(
-        factory = factory
-    )
+    val viewModel: CompanyViewModel = hiltViewModel()
 
     val uiState by viewModel.uiState.collectAsState()
 

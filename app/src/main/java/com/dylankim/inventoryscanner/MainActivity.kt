@@ -18,7 +18,6 @@ import com.dylankim.inventoryscanner.data.repository.LocationRepository
 import com.dylankim.inventoryscanner.data.repository.ProductRepository
 import com.dylankim.inventoryscanner.ui.barcodescanner.BarcodeScannerScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
-import com.dylankim.inventoryscanner.ui.company.CompanyViewModelFactory
 import com.dylankim.inventoryscanner.ui.inventory.InventoryScreen
 import com.dylankim.inventoryscanner.ui.inventory.InventoryViewModelFactory
 import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultScreen
@@ -39,11 +38,6 @@ class MainActivity : ComponentActivity() {
 
         val locationRepository = LocationRepository(
             database.locationDao()
-        )
-
-        val factory = CompanyViewModelFactory(
-            companyRepository,
-            locationRepository
         )
 
         val inventoryRecordRepository = InventoryRecordRepository(
@@ -81,7 +75,6 @@ class MainActivity : ComponentActivity() {
                         //셋팅화면
                         composable("company") {
                             CompanyScreen(
-                                factory = factory,
                                 navController = navController
                             )
                         }
