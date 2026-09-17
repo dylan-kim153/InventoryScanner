@@ -102,5 +102,15 @@ fun CompanyScreen(
         ) {
             Text("재고조사 결과")
         }
+
+
+        Button(
+            onClick = {
+                navController.navigate("productRemote")
+            }
+        ) {
+            Text("상품마스터 Download")
+        }
+
     }
 }

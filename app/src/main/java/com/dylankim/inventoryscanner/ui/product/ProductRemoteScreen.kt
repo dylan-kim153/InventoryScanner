@@ -48,7 +48,7 @@ fun ProductRemoteScreen(
                     Column {
                         Text(text = product.title)
                         Text(text = "가격: ${product.price}")
-                        Text(text = "바코드: ${product.barcode}")
+                        Text(text = "바코드: ${product.meta.barcode}")
                     }
                 }
             }
