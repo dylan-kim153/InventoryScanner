@@ -69,6 +69,10 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.retrofit.converter.gson)
+
     implementation(libs.androidx.compose.material.icons.extended)
 
     testImplementation(libs.junit)

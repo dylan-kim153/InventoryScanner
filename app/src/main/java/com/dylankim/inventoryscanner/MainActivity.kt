@@ -20,6 +20,7 @@ import com.dylankim.inventoryscanner.ui.barcodescanner.BarcodeScannerScreen
 import com.dylankim.inventoryscanner.ui.company.CompanyScreen
 import com.dylankim.inventoryscanner.ui.inventory.InventoryScreen
 import com.dylankim.inventoryscanner.ui.inventoryresult.InventoryResultScreen
+import com.dylankim.inventoryscanner.ui.product.ProductRemoteScreen
 import com.dylankim.inventoryscanner.ui.theme.InventoryScannerTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -89,6 +90,10 @@ class MainActivity : ComponentActivity() {
                                 navController = navController
                             )
 
+                        }
+                        //상품마스터 Download
+                        composable("productRemote") {
+                            ProductRemoteScreen()
                         }
                     }
                 }
