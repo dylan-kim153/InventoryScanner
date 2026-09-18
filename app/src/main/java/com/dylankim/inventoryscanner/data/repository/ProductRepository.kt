@@ -30,6 +30,7 @@ class ProductRepository @Inject constructor(
             productDto.toEntity(companyId)
         }
 
+        productDao.deleteByCompanyId(companyId)
         productDao.insertAll(products)
     }
 

@@ -15,4 +15,8 @@ interface ProductDao {
 
     @Insert
     suspend fun insertAll(products: List<Product>)
+
+    @Query("DELETE FROM product WHERE companyId = :companyId")
+    suspend fun deleteByCompanyId(companyId: Long)
+
 }
