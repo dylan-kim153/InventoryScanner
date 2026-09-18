@@ -14,7 +14,8 @@ import javax.inject.Inject
 data class ProductRemoteUiState(
     val products: List<ProductDto> = emptyList(),
     val isLoading: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val savedCount: Int = 0
 )
 
 @HiltViewModel
@@ -35,7 +36,8 @@ class ProductRemoteViewModel @Inject constructor(
                 repository.downloadProducts(companyId)
 
                 _uiState.value = ProductRemoteUiState(
-                    products = response.products
+                    products = response.products,
+                    savedCount = response.products.size
                 )
             } catch (e: Exception) {
                 _uiState.value = ProductRemoteUiState(
