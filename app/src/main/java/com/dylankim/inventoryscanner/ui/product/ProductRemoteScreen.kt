@@ -18,12 +18,13 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @Composable
 fun ProductRemoteScreen(
+    companyId: Long,
     viewModel: ProductRemoteViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadProducts()
+        viewModel.loadProducts(companyId)
     }
 
     when {

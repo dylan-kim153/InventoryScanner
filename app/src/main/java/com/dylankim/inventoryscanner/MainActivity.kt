@@ -92,8 +92,14 @@ class MainActivity : ComponentActivity() {
 
                         }
                         //상품마스터 Download
-                        composable("productRemote") {
-                            ProductRemoteScreen()
+                        composable("productRemote/{companyId}") { backStackEntry ->
+                            val companyId =
+                                backStackEntry.arguments?.getString("companyId")?.toLongOrNull()
+                                    ?: return@composable
+
+                            ProductRemoteScreen(
+                                companyId = companyId
+                            )
                         }
                     }
                 }

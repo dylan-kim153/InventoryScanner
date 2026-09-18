@@ -12,4 +12,7 @@ interface ProductDao {
 
     @Insert
     suspend fun insert(product: Product): Long
+
+    @Insert
+    suspend fun insertAll(products: List<Product>)
 }
