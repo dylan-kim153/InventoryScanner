@@ -106,8 +106,11 @@ fun CompanyScreen(
 
         Button(
             onClick = {
-                navController.navigate("productRemote")
-            }
+                val companyId = uiState.selectedCompany?.id ?: return@Button
+
+                navController.navigate("productRemote/$companyId")
+            },
+            enabled = uiState.selectedCompany != null
         ) {
             Text("상품마스터 Download")
         }

@@ -18,12 +18,13 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 
 @Composable
 fun ProductRemoteScreen(
+    companyId: Long,
     viewModel: ProductRemoteViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadProducts()
+        viewModel.loadProducts(companyId)
     }
 
     when {
@@ -38,17 +39,25 @@ fun ProductRemoteScreen(
         }
 
         else -> {
-            LazyColumn(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(16.dp)
             ) {
-                items(uiState.products) { product ->
-                    Column {
-                        Text(text = product.title)
-                        Text(text = "가격: ${product.price}")
-                        Text(text = "바코드: ${product.meta.barcode}")
+                Text(
+                    text = "상품마스터 저장 완료: ${uiState.savedCount}개"
+                )
+
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(uiState.products) { product ->
+                        Column {
+                            Text(text = product.title)
+                            Text(text = "가격: ${product.price}")
+                            Text(text = "바코드: ${product.meta.barcode}")
+                        }
                     }
                 }
             }
